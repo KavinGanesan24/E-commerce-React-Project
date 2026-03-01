@@ -3,9 +3,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch } from "react-redux";
+import { login } from "./store/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 let renderCount = 0;
-
 
 let schema = Yup.object().shape({
   name: Yup.string()
@@ -30,11 +34,20 @@ let schema = Yup.object().shape({
 
   cPassword: Yup.string()
     .required("Confirm Password is Required")
-    .oneOf([Yup.ref("password")], "Passwords must match")
+    .oneOf([Yup.ref("password")], "Passwords must match"),
 });
-
-
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
+
   let paperStyle = {
     width: 400,
     margin: "20px auto",
@@ -52,13 +65,17 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    mode: "onChange"
+    mode: "onChange",
   });
 
   console.log(errors);
 
   let handleData = (data) => {
     console.log(data);
+    dispatch(login(data));
+
+    // 🔥 Redirect to home
+    navigate("/");
   };
 
   return (

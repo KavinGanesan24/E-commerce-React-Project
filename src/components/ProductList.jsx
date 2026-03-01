@@ -9,12 +9,14 @@ import { FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./store/cartSlice";
 import { Container, Row, Col } from "react-bootstrap";
 
 const ProductList = () => {
   let navigate = useNavigate();
+
+  const searchTerm = useSelector((state) => state.search.searchTerm);
 
   let { products, error, isLoading, setProducts } = useFetch(
     "http://localhost:5000/products",
@@ -43,32 +45,26 @@ const ProductList = () => {
       setProducts(newProductList);
     });
   };
- 
-  let dispatch = useDispatch()
 
-  let cartState = useSelector( (state)=>{ return state.cart }  )
+  let dispatch = useDispatch();
 
-  let addItemToCart = (product) => { 
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
-    let checkProduct = cartState.some( cartProduct => cartProduct.id === product.id )
-    
-      if(!checkProduct){
-        dispatch( addItem( product )  )
-        Swal.fire({
-          title: "Success",
-          text: "Product Added Successfully",
-          icon: "success",
-        });
-      }
-      else{
-        Swal.fire({
-          title: "Oops!",
-          text: "Product Already Added",
-          icon: "error",
-          footer : "<p> Add Some other Product </p>"
-        });
-      }
-  }
+  let cartState = useSelector((state) => {
+    return state.cart.cartItems;
+  });
+
+  let addItemToCart = (product) => {
+    dispatch(addItem(product));
+
+    Swal.fire({
+      title: "Success",
+      text: "Product Added Successfully",
+      icon: "success",
+    });
+  };
 
   if (isLoading) {
     return (
@@ -87,23 +83,16 @@ const ProductList = () => {
     return (
       <div>
         {" "}
-        <article>
-          {" "}
-          <span>To Create New Product</span>{" "}
-          <Button
-            onClick={() => {
-              navigate("/newProduct");
-            }}
-          >
-            Click Me
-          </Button>{" "}
-        </article>
         {products.length !== 0 && (
           <Container className="mt-4">
             <Row className="g-4">
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <Col key={product.id} md={4} sm={6} xs={12}>
-                  <Card className="h-100">
+                  <Card
+                    className="h-100"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/product/${product.id}`)}
+                  >
                     <Card.Img
                       variant="top"
                       src={product.image}
@@ -112,30 +101,20 @@ const ProductList = () => {
 
                     <Card.Body>
                       <Card.Title>{product.title}</Card.Title>
-                      <Card.Text>${product.price}</Card.Text>
+                      <Card.Text>Rs : {product.price}</Card.Text>
                     </Card.Body>
 
                     <Card.Footer className="d-flex justify-content-evenly">
                       <Button
                         variant="primary"
-                        onClick={() => addItemToCart(product)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addItemToCart(product);
+                        }}
                       >
                         <MdAddShoppingCart />
                       </Button>
-
-                      <Button
-                        variant="secondary"
-                        onClick={() => navigate(`/update/${product.id}`)}
-                      >
-                        <FaEdit />
-                      </Button>
-
-                      <Button
-                        variant="danger"
-                        onClick={() => handleDelete(product.id)}
-                      >
-                        <MdOutlineFolderDelete />
-                      </Button>
+                      
                     </Card.Footer>
                   </Card>
                 </Col>

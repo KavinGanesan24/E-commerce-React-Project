@@ -2,18 +2,32 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { MdOutlineFolderDelete } from "react-icons/md";
-import { removeItem } from "./store/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { setCheckoutItem } from "./store/cartSlice";
+import {
+  removeItem,
+  increaseQuantity,
+  decreaseQuantity,
+} from "./store/cartSlice";
 
 const WishList = () => {
-  const cartProducts = useSelector((state) => state.cart);
-  
-  let dispatch = useDispatch()
+  const cartProducts = useSelector((state) => state.cart.cartItems);
+  const totalAmount = useSelector((state) => state.cart.totalAmount);
 
-  let handleDelete = (reduxItemId)=>{
-    dispatch( removeItem( reduxItemId ) )
-  }
+  let dispatch = useDispatch();
 
+  let navigate = useNavigate();
 
+  let handleDelete = (reduxItemId) => {
+    dispatch(removeItem(reduxItemId));
+  };
+  let handleIncrease = (id) => {
+    dispatch(increaseQuantity(id));
+  };
+
+  let handleDecrease = (id) => {
+    dispatch(decreaseQuantity(id));
+  };
 
   return (
     <div>
@@ -35,11 +49,49 @@ const WishList = () => {
 
                   <Card.Body>
                     <Card.Title>{product.title}</Card.Title>
-                    <Card.Text>₹ {product.price}</Card.Text>
+                    <Card.Text> Rs : {product.price}</Card.Text>
+                    <div className="d-flex align-items-center justify-content-center gap-3">
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleDecrease(product.id)}
+                      >
+                        -
+                      </Button>
+
+                      <span>{product.quantity}</span>
+
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleIncrease(product.id)}
+                      >
+                        +
+                      </Button>
+                    </div>
+                    <Card.Text>
+                      Total Amount: Rs : {product.quantity * product.price}
+                    </Card.Text>
+                    <Button
+                      variant="success"
+                      onClick={() => navigate("/checkout")}
+                    >
+                      Proceed To Checkout
+                    </Button>
+                    <Button
+                      variant="warning"
+                      onClick={() => {
+                        dispatch(setCheckoutItem(product));
+                        navigate("/checkout");
+                      }}
+                    >
+                      Buy Now
+                    </Button>
                   </Card.Body>
 
                   <Card.Footer className="text-center">
-                    <Button variant="danger" onClick={()=> handleDelete(product.id)}>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(product.id)}
+                    >
                       <MdOutlineFolderDelete />
                     </Button>
                   </Card.Footer>

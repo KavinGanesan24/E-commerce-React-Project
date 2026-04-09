@@ -63,10 +63,12 @@ function NavBar() {
                 Orders
               </Nav.Link>
             )}
-            <Nav.Link>
-              {isAdmin && <Link to="/admin">Profile</Link>}
-            </Nav.Link>
-           
+              {isAdmin && (
+                <Nav.Link as={Link} to="/admin">
+                  Profile
+                </Nav.Link>
+            )}
+              
             
           </Nav>
 

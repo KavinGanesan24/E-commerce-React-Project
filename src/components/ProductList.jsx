@@ -4,14 +4,15 @@ import Card from "react-bootstrap/Card";
 import { LifeLine } from "react-loading-indicators";
 import useFetch from "./custom-hook/useFetch";
 import { MdAddShoppingCart } from "react-icons/md";
-import { MdOutlineFolderDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./store/cartSlice";
 import { Container, Row, Col } from "react-bootstrap";
+
+
 
 const ProductList = () => {
   let navigate = useNavigate();
@@ -21,6 +22,10 @@ const ProductList = () => {
   let { products, error, isLoading, setProducts } = useFetch(
     "http://localhost:5000/products",
   );
+  const handleBuyNow = (product) => {
+    dispatch(addItem(product));
+    navigate("/checkout");
+  };
 
   let handleDelete = (id) => {
     axios.delete(`http://localhost:5000/products/${id}`).then(() => {
@@ -106,7 +111,14 @@ const ProductList = () => {
 
                     <Card.Footer className="d-flex justify-content-evenly">
                       <Button
-                        variant="primary"
+                        variant= "primary"
+                        onClick={() => handleBuyNow(product)}
+                        className="buy-btn"
+                      >
+                        Buy Now
+                      </Button>
+                      <Button
+                        variant="danger"
                         onClick={(e) => {
                           e.stopPropagation();
                           addItemToCart(product);
@@ -114,7 +126,6 @@ const ProductList = () => {
                       >
                         <MdAddShoppingCart />
                       </Button>
-                      
                     </Card.Footer>
                   </Card>
                 </Col>

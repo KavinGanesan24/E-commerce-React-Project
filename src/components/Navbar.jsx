@@ -524,7 +524,7 @@ function NavBar() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                Sign In
+                Login In
               </Button>
             ) : (
               <Button

@@ -7,7 +7,7 @@ import { ChevronRight } from "lucide-react";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { products, isLoading } = useFetch("https://e-commerce-react-project-adij.onrender.com");
+  const { products, isLoading } = useFetch("https://e-commerce-react-project-adij.onrender.com/products");
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   useEffect(() => {

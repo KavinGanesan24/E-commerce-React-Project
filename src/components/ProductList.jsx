@@ -12,15 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./store/cartSlice";
 import { Container, Row, Col } from "react-bootstrap";
 
-
-
 const ProductList = () => {
   let navigate = useNavigate();
 
   const searchTerm = useSelector((state) => state.search.searchTerm);
 
   let { products, error, isLoading, setProducts } = useFetch(
-    "https://e-commerce-react-project-adij.onrender.com",
+    "https://e-commerce-react-project-adij.onrender.com/products",
   );
   const handleBuyNow = (product) => {
     dispatch(addItem(product));
@@ -28,38 +26,40 @@ const ProductList = () => {
   };
 
   let handleDelete = (id) => {
-    axios.delete(`https://e-commerce-react-project-adij.onrender.com/${id}`).then(() => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
-        }
+    axios
+      .delete(
+        `https://e-commerce-react-project-adij.onrender.com/products/${id}`,
+      )
+      .then(() => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+        let newProductList = products.filter((product) => product.id !== id);
+        setProducts(newProductList);
       });
-      let newProductList = products.filter((product) => product.id !== id);
-      setProducts(newProductList);
-    });
   };
 
   let dispatch = useDispatch();
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
-  let cartState = useSelector((state) => {
-    return state.cart.cartItems;
-  });
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+    : [];
 
   let addItemToCart = (product) => {
     dispatch(addItem(product));
@@ -111,7 +111,7 @@ const ProductList = () => {
 
                     <Card.Footer className="d-flex justify-content-evenly">
                       <Button
-                        variant= "primary"
+                        variant="primary"
                         onClick={() => handleBuyNow(product)}
                         className="buy-btn"
                       >

@@ -20,7 +20,7 @@ const ProductList = () => {
   const searchTerm = useSelector((state) => state.search.searchTerm);
 
   let { products, error, isLoading, setProducts } = useFetch(
-    "http://localhost:5000/products",
+    "https://e-commerce-react-project-adij.onrender.com",
   );
   const handleBuyNow = (product) => {
     dispatch(addItem(product));
@@ -28,7 +28,7 @@ const ProductList = () => {
   };
 
   let handleDelete = (id) => {
-    axios.delete(`http://localhost:5000/products/${id}`).then(() => {
+    axios.delete(`https://e-commerce-react-project-adij.onrender.com/${id}`).then(() => {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",

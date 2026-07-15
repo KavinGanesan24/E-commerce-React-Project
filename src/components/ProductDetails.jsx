@@ -25,7 +25,7 @@ const ProductDetails = () => {
   };
 
   const { products, isLoading } = useFetch(
-    `http://localhost:5000/products/${id}`,
+    `https://e-commerce-react-project-adij.onrender.com/${id}`,
   );
 
   const product = products;

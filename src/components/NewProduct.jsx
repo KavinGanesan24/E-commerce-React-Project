@@ -63,7 +63,7 @@ const NewProduct = () => {
   let handleAdd = (e)=>{
     e.preventDefault()
 
-    fetch("http://localhost:5000/products",{
+    fetch("https://e-commerce-react-project-adij.onrender.com",{
       method : "POST",
       headers : {
         "Content-Type" : "application/json"

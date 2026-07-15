@@ -30,7 +30,7 @@ const UpdateProduct = () => {
   let {id} = useParams()
 
   useEffect(()=>{
-    axios.get(`http://localhost:5000/products/${id}`)
+    axios.get(`https://e-commerce-react-project-adij.onrender.com/${id}`)
     .then(res => setUpdateProduct(res.data))
   },[])
 
@@ -59,7 +59,7 @@ const UpdateProduct = () => {
   let handleUpdate = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:5000/products/${id}`, {
+    fetch(`https://e-commerce-react-project-adij.onrender.com/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

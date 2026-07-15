@@ -25,7 +25,7 @@ function NavBar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/Signup");
+    navigate("/");
   };
 
   return (
@@ -111,7 +111,7 @@ function NavBar() {
                   backgroundColor: "#6a1b9a",
                   border: "none"
                 }}
-                onClick={() => navigate("/Signup")}
+                onClick={() => navigate("/")}
               >
                 Login
               </Button>
@@ -134,7 +134,7 @@ function NavBar() {
               onClick={() =>
                 isAuthenticated
                   ? navigate("/WishList")
-                  : navigate("/Signup")
+                  : navigate("/")
               }
             >
               <MdShoppingCart size={22} />

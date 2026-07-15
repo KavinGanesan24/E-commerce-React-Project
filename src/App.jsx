@@ -5,7 +5,6 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Product from "./components/Product";
-import SignUp from "./components/SignUp";
 import ProductList from "./components/ProductList";
 import ProductDetails from "./components/ProductDetails";
 import NavBar from "./components/Navbar";
@@ -41,7 +40,7 @@ function App() {
 
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/Login/:newUser" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
+          
           <Route path="/NewProduct" element={<NewProduct />} />
           <Route path="/update/:id" element={<UpdateProduct />} />
           <Route path="/order-success" element={<OrderSuccess />} />

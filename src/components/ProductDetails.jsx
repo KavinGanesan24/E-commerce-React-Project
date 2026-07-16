@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { setBuyNowProduct } from "./store/buyNowSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -25,7 +26,7 @@ const ProductDetails = () => {
   };
 
   const { products, isLoading } = useFetch(
-    `https://e-commerce-react-project-adij.onrender.com/${id}`,
+    `https://e-commerce-react-project-adij.onrender.com/products/${id}`,
   );
 
   const product = products;
@@ -34,64 +35,72 @@ const ProductDetails = () => {
     return <h3>Loading...</h3>;
   }
 
- return (
-  <Container className="mt-5">
+  return (
+    <Container className="mt-5">
+      {/* Back Button */}
+      <Button variant="secondary" className="mb-4" onClick={() => navigate(-1)}>
+        ← Back
+      </Button>
 
-    {/* Back Button */}
-    <Button
-      variant="secondary"
-      className="mb-4"
-      onClick={() => navigate(-1)}
-    >
-      ← Back
-    </Button>
+      <Row>
+        {/* Product Image */}
+        <Col md={6}>
+          <Card>
+            <Card.Img
+              src={product.image}
+              style={{
+                height: "400px",
+                objectFit: "contain",
+                padding: "20px",
+              }}
+            />
+          </Card>
+        </Col>
 
-    <Row>
-      {/* Product Image */}
-      <Col md={6}>
-        <Card>
-          <Card.Img
-            src={product.image}
-            style={{
-              height: "400px",
-              objectFit: "contain",
-              padding: "20px"
-            }}
-          />
-        </Card>
-      </Col>
+        {/* Product Details */}
+        <Col md={6}>
+          <h2>{product.title}</h2>
+          <h3 className="text-success">₹ {product.price}</h3>
 
-      {/* Product Details */}
-      <Col md={6}>
-        <h2>{product.title}</h2>
-        <h3 className="text-success">
-          ₹ {product.price}
-        </h3>
+          {/* Quantity Selector */}
+          <div className="my-3">
+            <Button onClick={decreaseQty}>-</Button>
 
-        {/* Quantity Selector */}
-        <div className="my-3">
-          <Button onClick={decreaseQty}>-</Button>
+            <span className="mx-3 fs-4">{quantity}</span>
 
-          <span className="mx-3 fs-4">
-            {quantity}
-          </span>
+            <Button onClick={increaseQty}>+</Button>
+          </div>
 
-          <Button onClick={increaseQty}>+</Button>
-        </div>
+          <div className="d-flex gap-3 mt-4">
+            <Button
+              size="lg"
+              variant="warning"
+              onClick={() => dispatch(addItem({ ...product, quantity }))}
+            >
+              Add To Cart
+            </Button>
 
-        <Button
-          size="lg"
-          variant="warning"
-          onClick={() =>
-            dispatch(addItem({ ...product, quantity }))
-          }
-        >
-          Add To Cart
-        </Button>
-      </Col>
-    </Row>
-  </Container>
-);
+            <Button
+              size="lg"
+              variant="success"
+              onClick={() => {
+                dispatch(
+                  setBuyNowProduct({
+                    ...product,
+                    quantity,
+                  }),
+                );
+
+                navigate("/checkout");
+              }}
+            >
+              Buy Now
+            </Button>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 
 export default ProductDetails;

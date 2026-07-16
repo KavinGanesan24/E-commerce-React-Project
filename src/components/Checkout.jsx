@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { clearCart } from "./store/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { addOrder } from "./store/orderSlice";
+import { clearBuyNowProduct } from "./store/buyNowSlice";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -19,17 +20,22 @@ const Checkout = () => {
     };
 
     dispatch(addOrder(orderData));
-    dispatch(clearCart());
+
+    if (buyNowProduct) {
+      dispatch(clearBuyNowProduct());
+    } else {
+      dispatch(clearCart());
+    }
 
     navigate("/order-success");
   };
 
-  const checkoutItem = useSelector((state) => state.cart.checkoutItem);
+  const buyNowProduct = useSelector((state) => state.buyNow.product);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   // ✅ FIRST decide items
-  const itemsToCheckout = checkoutItem ? [checkoutItem] : cartItems;
+  const itemsToCheckout = buyNowProduct ? [buyNowProduct] : cartItems;
 
   // ✅ THEN calculate total
   const totalAmount = itemsToCheckout.reduce(

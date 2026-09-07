@@ -1,45 +1,42 @@
-import React ,{useEffect, useState} from "react";
-import { Button,Grid,Paper,TextField,Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const UpdateProduct = () => {
-  let paperStyle = {
+  const paperStyle = {
     width: 400,
     margin: "20px auto",
     padding: "20px",
   };
-  /*
-        {
-        "id": 1,
-        "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-        "price": 109.95,
-        "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-        "category": "men's clothing",
-        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
-        "rating": {
-          "rate": 3.9,
-          "count": 120
-        }
-        */
 
-  let [updateProduct, setUpdateProduct] = useState(null);
+  const [updateProduct, setUpdateProduct] = useState(null);
 
-  let navigate = useNavigate()
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  let {id} = useParams()
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `https://e-commerce-react-project-adij.onrender.com/${id}`,
+        );
 
-  useEffect(()=>{
-    axios.get(`https://e-commerce-react-project-adij.onrender.com/${id}`)
-    .then(res => setUpdateProduct(res.data))
-  },[])
+        setUpdateProduct(response.data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
 
-  let handleChange = (e) => {
-    let { value, name } = e.target;
+    fetchProduct();
+  }, [id]);
 
-    let fieldName = name.split("rating.")[1];
+  const handleChange = (e) => {
+    const { value, name } = e.target;
 
     if (name.includes("rating.")) {
+      const fieldName = name.split("rating.")[1];
+
       setUpdateProduct({
         ...updateProduct,
         rating: {
@@ -54,34 +51,42 @@ const UpdateProduct = () => {
       });
     }
   };
-  
 
-  let handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    fetch(`https://e-commerce-react-project-adij.onrender.com/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updateProduct),
-    }).then(() => {
-      alert("Saved successfuly");
-      navigate("/product")
-    });
-  };
-  
+    try {
+      await axios.put(
+        `https://e-commerce-react-project-adij.onrender.com/${id}`,
+        updateProduct,
+      );
 
-  if(updateProduct!==null){
-    return (
+      alert("Saved successfully");
+
+      navigate("/product");
+    } catch (error) {
+      console.error("Error updating product:", error);
+
+      alert("Failed to update product");
+    }
+  };
+
+  if (updateProduct === null) {
+    return <div>Loading...</div>;
+  }
+
+  return (
     <Paper elevation={20} style={paperStyle}>
       <Typography variant="h5" textAlign="center">
-        {" "}
         Update New Product
       </Typography>
+
       <Grid
         component="form"
-        style={{ display: "grid", gap: "20px" }}
+        style={{
+          display: "grid",
+          gap: "20px",
+        }}
         onSubmit={handleUpdate}
       >
         <TextField
@@ -92,6 +97,7 @@ const UpdateProduct = () => {
           fullWidth
           onChange={handleChange}
         />
+
         <TextField
           value={updateProduct.category}
           name="category"
@@ -100,6 +106,7 @@ const UpdateProduct = () => {
           fullWidth
           onChange={handleChange}
         />
+
         <Grid container spacing={2}>
           <Grid size={6}>
             <TextField
@@ -111,6 +118,7 @@ const UpdateProduct = () => {
               onChange={handleChange}
             />
           </Grid>
+
           <Grid size={6}>
             <TextField
               value={updateProduct.rating.count}
@@ -128,11 +136,6 @@ const UpdateProduct = () => {
       </Grid>
     </Paper>
   );
-  }
-  else{
-    <div> Loading.. </div>
-  }
-  
 };
 
 export default UpdateProduct;

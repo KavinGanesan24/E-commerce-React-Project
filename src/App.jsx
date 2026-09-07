@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -12,7 +8,7 @@ import NavBar from "./components/Navbar";
 import NotFound from "./components/NotFound";
 import NewProduct from "./components/NewProduct";
 import UpdateProduct from "./components/UpdateProduct";
-import WishList from "./components/WishList";
+import CartPage from "./components/CartPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Checkout from "./components/Checkout";
 import OrderSuccess from "./components/OrderSuccess";
@@ -35,35 +31,17 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route
-            path="/Product"
-            element={<ProductList />}
-          />
+          <Route path="/Product" element={<ProductList />} />
 
-          <Route
-            path="/product/:id"
-            element={<ProductDetails />}
-          />
+          <Route path="/product/:id" element={<ProductDetails />} />
 
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/NewProduct"
-            element={<NewProduct />}
-          />
+          <Route path="/NewProduct" element={<NewProduct />} />
 
-          <Route
-            path="/update/:id"
-            element={<UpdateProduct />}
-          />
+          <Route path="/update/:id" element={<UpdateProduct />} />
 
-          <Route
-            path="/order-success"
-            element={<OrderSuccess />}
-          />
+          <Route path="/order-success" element={<OrderSuccess />} />
 
           <Route
             path="/checkout"
@@ -75,10 +53,10 @@ function App() {
           />
 
           <Route
-            path="/WishList"
+            path="/CartPage"
             element={
               <ProtectedRoute>
-                <WishList />
+                <CartPage />
               </ProtectedRoute>
             }
           />
@@ -92,25 +70,13 @@ function App() {
             }
           />
 
-          <Route
-            path="/admin"
-            element={<Admin />}
-          />
+          <Route path="/admin" element={<Admin />} />
 
-          <Route
-            path="/create"
-            element={<NewProduct />}
-          />
+          <Route path="/create" element={<NewProduct />} />
 
-          <Route
-            path="/edit/:id"
-            element={<UpdateProduct />}
-          />
+          <Route path="/edit/:id" element={<UpdateProduct />} />
 
-          <Route
-            path="/*"
-            element={<NotFound />}
-          />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>

@@ -32,7 +32,7 @@ const Checkout = () => {
       items: itemsToCheckout,
       totalAmount,
       paymentMethod,
-      date: new Date().toLocaleString(),
+      date: new Date().toISOString(),
     };
 
     dispatch(addOrder(orderData));

@@ -5,7 +5,13 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
-import { MdShoppingCart, MdFavoriteBorder, MdSearch, MdClose, MdMenu } from "react-icons/md";
+import {
+  MdShoppingCart,
+  MdFavoriteBorder,
+  MdSearch,
+  MdClose,
+  MdMenu,
+} from "react-icons/md";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./store/authSlice";
@@ -149,7 +155,8 @@ function NavBar() {
                 <Button
                   type="submit"
                   style={{
-                    background: "linear-gradient(135deg, #6a0bad 0%, #ff3399 100%)",
+                    background:
+                      "linear-gradient(135deg, #6a0bad 0%, #ff3399 100%)",
                     border: "none",
                     borderRadius: "8px",
                     padding: "8px 16px",
@@ -172,7 +179,9 @@ function NavBar() {
                 fontWeight: isActive("/") ? "600" : "500",
                 fontSize: "15px",
                 transition: "all 0.3s ease",
-                borderBottom: isActive("/") ? "2px solid #ff3399" : "2px solid transparent",
+                borderBottom: isActive("/")
+                  ? "2px solid #ff3399"
+                  : "2px solid transparent",
                 paddingBottom: "4px",
                 marginRight: "20px",
               }}
@@ -198,7 +207,9 @@ function NavBar() {
                 fontWeight: isActive("/Product") ? "600" : "500",
                 fontSize: "15px",
                 transition: "all 0.3s ease",
-                borderBottom: isActive("/Product") ? "2px solid #ff3399" : "2px solid transparent",
+                borderBottom: isActive("/Product")
+                  ? "2px solid #ff3399"
+                  : "2px solid transparent",
                 paddingBottom: "4px",
                 marginRight: "20px",
               }}
@@ -217,7 +228,13 @@ function NavBar() {
             </Nav.Link>
 
             {/* ===== CATEGORIES DROPDOWN ===== */}
-            <div style={{ position: "relative", display: "inline-block", marginRight: "20px" }}>
+            <div
+              style={{
+                position: "relative",
+                display: "inline-block",
+                marginRight: "20px",
+              }}
+            >
               <Nav.Link
                 style={{
                   color: "#333",
@@ -264,34 +281,36 @@ function NavBar() {
                 }}
                 className="dropdown-menu-hover"
               >
-                {["Beauty", "Fashion", "Skincare", "Accessories"].map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    to="/Product"
-                    onClick={() => dispatch(setSearchTerm(cat))}
-                    style={{
-                      display: "block",
-                      padding: "12px 16px",
-                      color: "#333",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                      transition: "all 0.2s ease",
-                      borderLeft: "3px solid transparent",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = "#f7f0fb";
-                      e.target.style.borderLeftColor = "#ff3399";
-                      e.target.style.color = "#ff3399";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = "transparent";
-                      e.target.style.borderLeftColor = "transparent";
-                      e.target.style.color = "#333";
-                    }}
-                  >
-                    {cat}
-                  </Link>
-                ))}
+                {["Beauty", "Fashion", "Skincare", "Accessories"].map(
+                  (cat, idx) => (
+                    <Link
+                      key={idx}
+                      to="/Product"
+                      onClick={() => dispatch(setSearchTerm(cat))}
+                      style={{
+                        display: "block",
+                        padding: "12px 16px",
+                        color: "#333",
+                        textDecoration: "none",
+                        fontSize: "14px",
+                        transition: "all 0.2s ease",
+                        borderLeft: "3px solid transparent",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = "#f7f0fb";
+                        e.target.style.borderLeftColor = "#ff3399";
+                        e.target.style.color = "#ff3399";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = "transparent";
+                        e.target.style.borderLeftColor = "transparent";
+                        e.target.style.color = "#333";
+                      }}
+                    >
+                      {cat}
+                    </Link>
+                  ),
+                )}
               </div>
             </div>
 
@@ -304,7 +323,9 @@ function NavBar() {
                   fontWeight: isActive("/orders") ? "600" : "500",
                   fontSize: "15px",
                   transition: "all 0.3s ease",
-                  borderBottom: isActive("/orders") ? "2px solid #ff3399" : "2px solid transparent",
+                  borderBottom: isActive("/orders")
+                    ? "2px solid #ff3399"
+                    : "2px solid transparent",
                   paddingBottom: "4px",
                   marginRight: "20px",
                 }}
@@ -332,7 +353,9 @@ function NavBar() {
                   fontWeight: isActive("/admin") ? "600" : "500",
                   fontSize: "15px",
                   transition: "all 0.3s ease",
-                  borderBottom: isActive("/admin") ? "2px solid #ff3399" : "2px solid transparent",
+                  borderBottom: isActive("/admin")
+                    ? "2px solid #ff3399"
+                    : "2px solid transparent",
                   paddingBottom: "4px",
                 }}
                 onMouseEnter={(e) => {
@@ -382,7 +405,8 @@ function NavBar() {
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = "#ff3399";
-                  e.target.style.boxShadow = "0 0 0 3px rgba(255, 52, 153, 0.1)";
+                  e.target.style.boxShadow =
+                    "0 0 0 3px rgba(255, 52, 153, 0.1)";
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = "#e0e0e0";
@@ -414,10 +438,10 @@ function NavBar() {
               marginLeft: "auto",
             }}
           >
-            {/* WISHLIST - Only show when authenticated */}
+            {/* CartPage - Only show when authenticated */}
             {isAuthenticated && (
               <Button
-                onClick={() => navigate("/WishList")}
+                onClick={() => navigate("/CartPage")}
                 style={{
                   position: "relative",
                   background: "transparent",
@@ -450,7 +474,7 @@ function NavBar() {
             {/* CART */}
             <Button
               onClick={() =>
-                isAuthenticated ? navigate("/WishList") : navigate("/")
+                isAuthenticated ? navigate("/CartPage") : navigate("/")
               }
               style={{
                 position: "relative",
@@ -468,7 +492,8 @@ function NavBar() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.08)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 52, 153, 0.3)";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 20px rgba(255, 52, 153, 0.3)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";

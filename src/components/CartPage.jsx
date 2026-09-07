@@ -12,7 +12,7 @@ import {
 
 import { setBuyNowProduct } from "./store/buyNowSlice";
 
-const WishList = () => {
+const CartPage = () => {
   const cartProducts = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
 
@@ -122,4 +122,4 @@ const WishList = () => {
   );
 };
 
-export default WishList;
+export default CartPage;
